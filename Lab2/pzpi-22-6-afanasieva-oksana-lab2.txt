@@ -1,1 +1,258 @@
+Міністерство освіти і науки України
+Харківський національний  університет радіоелектроніки
 
+Кафедра програмної інженерії
+
+
+ЗВІТ
+з лабораторної роботи №2
+з дисципліни «Архітектура програмного забезпечення»
+на тему: «Розробка програмної архітектури, створення та відлагодження програмного коду серверної частини програмної системи»
+
+
+Виконала:	
+ст. гр. ПЗПІ-22-6	
+Афанасьєва О.М.	
+
+Перевірив:
+ст. викл. каф. ПІ
+Сокорчук І.П.
+
+
+Харків 2025
+1 ІСТОРІЯ ЗМІН
+Таблиця 1 – Історія змін 
+№	Дата	Версія звіту	Опис змін та виправлень
+1	20.05.2025	0.1	Створено розділ «Історія змін»
+2	20.05.2025	0.1	Створено розділ «Завдання»
+3	20.05.2025	0.1	Створено розділ «Опис виконаної роботи»
+4	20.05.2025	0.1	Створено додаток Б та додано всі згадані графічні матеріали
+5	23.05.2025	0.1	Створено додаток В та додано частини програмного коду
+6	23.05.2025	0.1	Створено розділ «Висновки»
+7	26.05.2025	0.1	Додано посилання на відеозапис та хронологічний опис доповіді у додаток А
+
+2 ЗАВДАННЯ
+1.	Розробити серверну / back-end частину програмної системи.
+2.	Проаналізувати завдання у додатку.
+3.	Виконати контрольні завдання п. 2.6.
+4.	Відкрити створений на попередній лабораторній роботі репозиторій GitHub.
+5.	Створіти у репозиторії директорію Task2 та текстовий файл з описом інженерних рішень у цій частині проєкту, як вказано у додатку.
+6.	Зафіксувати кожну внесену зміну командою git commit з відповідним коментарем та фіксувати цією командою усі наступні зміни у проєкті.
+7.	Створити у директорії Task2 піддиректорію для програмного коду, як вказано у додатку.
+8.	Створити програмний код, завантажити його у створену піддиректорію, зафіксувати внесені у репозиторій зміни.
+9.	Виконати функціональне тестування створеного програмного коду та створити відеозапис цього тестування тривалістю 7-10 хвилин з усними поясненнями процесу тестування.
+10.	Завантажити створений відеозапис тестування YouTube канал для вашого облікового запису в домені @nure.ua.
+11.	Створити для завантаженого запису його хронологічний опис.
+12.	Оформити звіт у форматі pdf та завантажити його на навчальну платформу https://dl.nure.ua/.
+13.	У коментарях до завантаженого звіту вказпти посилання на відеозапис тестування у вашому каналі YouTube. 
+ 
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+Проєкт використовує клієнт-серверну архітектуру. Серверна частина реалізована на платформі ASP.NET Core, що забезпечує високу продуктивність, кросплатформність та можливість легкого масштабування системи. Для зберігання даних використовується реляційна система управління базами даних MS SQL. Для ефективної роботи з базою даних застосовується Entity Framework Core. В той час як безпека системи забезпечується за допомогою JWT автентифікації.
+Було розроблено базу даних програмної системи. Її опис представлено в таблицях 1-5. Також було створено ER-діаграму, яку наведено на рисунку Б.3 у додатку Б.
+
+Таблиця 1 - Таблиця бази даних “user”
+user_id	INT PRIMARY KEY	NOT NULL
+username	NVARCHAR(100)	NOT NULL
+address	NVARCHAR(100)	NULL
+email	VARCHAR(50)	NOT NULL
+password	VARCHAR(100)	NOT NULL
+role	ENUM(‘User’, ‘SystemAdministrator’, ‘BusinessLogicAdministrator’, ‘BackupAdministrator’)	NOT NULL
+
+Таблиця 2 - Таблиця бази даних “container”
+container_id	INT PRIMARY KEY	NOT NULL
+address	NVARCHAR(100)	NOT NULL
+type	ENUM(‘plastic’, ‘paper, ‘glass’, ‘metal’, ‘electronics’, ‘organic)	NOT NULL
+max_size	FLOAT(6, 2)	NOT NULL
+user_id	INT FOREIGN KEY	NULL
+
+Таблиця 3 - Таблиця бази даних “sensor”
+sensor_id	INT PRIMARY KEY	NOT NULL
+container_id	INT FOREIGN KEY	NOT NULL
+
+Таблиця 4 - Таблиця бази даних “sensor_data”
+sensor_data_id	INT PRIMARY KEY	NOT NULL
+timestamp	DATETIME	NOT NULL
+fullness	FLOAT(5, 2)	NOT NULL
+temperature	FLOAT(5, 2)	NOT NULL
+wetness	FLOAT(5, 2)	NOT NULL
+sensor_id	INT FOREIGN KEY	NOT NULL
+
+Таблиця 5 - Таблиця бази даних “notification”
+notification_id	INT PRIMARY KEY	NOT NULL
+subject	TEXT	NOT NULL
+message	TEXT	NOT NULL
+timestamp	DATETIME	NOT NULL
+sensor_data_id	INT FOREIGN KEY	NULL
+user_id	INT FOREIGN KEY	NOT NULL
+
+Також було створено специфікацію розробленого API, яка наведена в таблиці 6.
+
+Таблиця 6 – Специфікація API
+GET	/users	Отримати список усіх користувачів
+POST	/users	Створити нового користувача, зареєструватися
+GET	/users/{id}	Отримати певного користувача
+PUT	/users/{id}	Оновити певного користувача
+DELETE	/users/{id}	Видалити певного користувача
+GET	/containers	Отримати список контейнерів
+POST	/containers	Додати новий контейнер
+GET	/containers/{id}	Отримати певний контейнер
+PUT	/containers/{id}	Оновити певний контейнер
+DELETE	/containers/{id}	Видалити певний контейнер
+GET	/containers/type/{type}	Отримати контейнери з певним типом відходів
+GET	/containers/address/{address}	Отримати контейнери з певною адресою
+GET	/sensors	Отримати список сенсорів
+POST	/sensors	Додати новий сенсор
+GET	/sensors/{id}	Отримати певний сенсор
+PUT	/sensors/{id}	Оновити певний сенсор
+DELETE	/sensors/{id}	Видалити певний сенсор
+GET	/sensordata	Отримати список отриманих сенсорами даних
+POST	/sensordata	Додати нові дані сенсора
+GET	/sensordata/{id}	Отримати певні дані сенсора
+DELETE	/sensordata/{id}	Видалити певні дані сенсора
+GET	/sensordata/sensor/{sensorId}	Отримати дані з певного сенсора
+GET	/sensordata/date/{date}	Отримати дані за обрану дату
+GET	/notifications	Отримати список сповіщень
+POST	/notifications	Створити сповіщення
+GET	/notifications/{id}	Отримати певне сповіщення
+DELETE	/notifications/{id}	Видалити певне сповіщення
+GET	/notifications /users/{userId}	Отримати сповіщення певного користувача
+GET	/notifications/date/{date}	Отримати сповіщення за обрану дату
+ 
+4 ВИСНОВКИ
+Під час виконання лабораторної роботи було розроблено серверну частину програмної системи. Було реалізовано всі основні CRUD-операції, створено базу даних, розроблено бізнес-логіку та функції адміністрування.
+
+ДОДАТОК А
+Відеозапис та хронологічний опис
+
+Відеозапис доповіді на YouTube: 
+Хронологічний опис відеозапису:
+
+ 
+ДОДАТОК Б
+Графічні матеріали
+
+
+Рисунок Б.1 – UML діаграма розгортання
+ 
+Рисунок Б.2 – UML діаграма прецедентів
+ 
+Рисунок Б.3 – ER діаграма даних
+ 
+Рисунок Б.4 – UML діаграма діяльності
+
+ 
+ДОДАТОК В
+Програмний код
+
+В.1 Математична обробка прикладних даних
+GitHub репозиторій: 
+1  private float calculateMaxAbsoluteHumidity(float temperature)
+2  {
+3      double exponent = (17.67 * temperature) / (temperature + 243.5);
+4      double numerator = 6.112 * Math.Exp(exponent) * 216.7;
+5      double maxAbsoluteHumidity = numerator / (temperature + 273.15);
+6      return (float)maxAbsoluteHumidity;
+7  }
+
+В.2 Адміністрування бізнес-логіки системи
+GitHub репозиторій: 
+1  using Microsoft.AspNetCore.Authorization;
+2  using Microsoft.AspNetCore.Mvc;
+3  using SortGarbageAPI.Models;
+4  using SortGarbageAPI.Services;
+5  
+6  namespace SortGarbageAPI.Controllers
+7  {
+8      [ApiController]
+9      [Route("/users")]
+10      public class UserController : ControllerBase
+11      {
+12          private readonly UserService _userService;
+13  
+14          public UserController(UserService userService)
+15          {
+16              _userService = userService;
+17          }
+18  
+19          [HttpGet]
+20          [Authorize(Roles = "2")]
+21          public async Task<IActionResult> GetUsers()
+22          {
+23              var users = await _userService.GetAllUsersAsync();
+24              return Ok(users);
+25          }
+26  
+27          [HttpPost]
+28          [Authorize(Roles = "2")]
+29          public async Task<IActionResult> CreateUser([FromBody] User user)
+30          {
+31              if (await _userService.EmailExistsAsync(user.Email))
+32              {
+33                  return BadRequest("There is already a user with this email");
+34              }
+35  
+36              var createdUser = await _userService.CreateUserAsync(user);
+37              return CreatedAtAction(nameof(GetUserById), new { id = createdUser.UserId }, createdUser);
+38          }
+39  
+40          [HttpGet("{id}")]
+41          [Authorize(Roles = "2")]
+42          public async Task<IActionResult> GetUserById(int id)
+43          {
+44              var user = await _userService.GetUserByIdAsync(id);
+45              if (user == null)
+46              {
+47                  return NotFound();
+48              }
+49              return Ok(user);
+50          }
+51  
+52          [HttpPut("{id}")]
+53          [Authorize(Roles = "2")]
+54          public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedData)
+55          {
+56              if (!await _userService.UpdateUserAsync(id, updatedData))
+57              {
+58                  return NotFound();
+59              }
+60              return Ok("User data updated successfully");
+61          }
+62  
+63          [HttpDelete("{id}")]
+64          [Authorize(Roles = "2")]
+65          public async Task<IActionResult> DeleteUser(int id)
+66          {
+67              if (!await _userService.DeleteUserAsync(id))
+68              {
+69                  return NotFound();
+70              }
+71              return Ok("User data deleted successfully");
+72          }
+73      }
+74  }
+
+В.3 Резервне копіювання користувацьких даних
+GitHub репозиторій: 
+1  public async Task BackupDatabaseAsync(string backupFolderPath)
+2  {
+3      if (string.IsNullOrEmpty(backupFolderPath) || !Directory.Exists(backupFolderPath))
+4      {
+5          throw new ArgumentException("Backup folder path is invalid or does not exist.", nameof(backupFolderPath));
+6      }
+7  
+8      var connectionString = _configuration.GetConnectionString("DefaultConnection");
+9      var databaseName = new SqlConnectionStringBuilder(connectionString).InitialCatalog;
+10  
+11      var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+12      var backupFileName = $"{databaseName}_Backup_{timestamp}.bak";
+13      var backupFilePath = Path.Combine(backupFolderPath, backupFileName);
+14  
+15      var query = $"BACKUP DATABASE [{databaseName}] TO DISK = @BackupFilePath";
+16  
+17      await using var connection = new SqlConnection(connectionString);
+18      await connection.OpenAsync();
+19  
+20      using var command = new SqlCommand(query, connection);
+21      command.Parameters.AddWithValue("@BackupFilePath", backupFilePath);
+22      await command.ExecuteNonQueryAsync();
+23  }
