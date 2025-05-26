@@ -145,7 +145,7 @@ GET	/notifications/date/{date}	Отримати сповіщення за обр
 Програмний код
 
 В.1 Математична обробка прикладних даних
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Services/SensorDataService.cs
 1  private float calculateMaxAbsoluteHumidity(float temperature)
 2  {
 3      double exponent = (17.67 * temperature) / (temperature + 243.5);
@@ -155,7 +155,7 @@ GitHub репозиторій:
 7  }
 
 В.2 Адміністрування бізнес-логіки системи
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Controllers/UserController.cs
 1  using Microsoft.AspNetCore.Authorization;
 2  using Microsoft.AspNetCore.Mvc;
 3  using SortGarbageAPI.Models;
@@ -232,7 +232,7 @@ GitHub репозиторій:
 74  }
 
 В.3 Резервне копіювання користувацьких даних
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Services/DatabaseService.cs
 1  public async Task BackupDatabaseAsync(string backupFolderPath)
 2  {
 3      if (string.IsNullOrEmpty(backupFolderPath) || !Directory.Exists(backupFolderPath))
