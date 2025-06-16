@@ -1,1 +1,276 @@
+Міністерство освіти і науки України
+Харківський національний  університет радіоелектроніки
 
+Кафедра програмної інженерії
+
+
+ЗВІТ
+з лабораторної роботи №3
+з дисципліни «Архітектура програмного забезпечення»
+на тему: «Розробка програмної архітектури, створення та відлагодження програмного коду веб клієнта програмної системи»
+
+
+Виконала:	
+ст. гр. ПЗПІ-22-6	
+Афанасьєва О.М.	
+
+Перевірив:
+ст. викл. каф. ПІ
+Сокорчук І.П.
+
+Харків 2025
+1 ІСТОРІЯ ЗМІН
+Таблиця 1 – Історія змін 
+№	Дата	Версія звіту	Опис змін та виправлень
+1	29.05.2025	0.1	Створено розділ «Історія змін»
+2	29.05.2025	0.1	Створено розділ «Завдання»
+3	15.06.2025	0.1	Створено розділ «Опис виконаної роботи»
+4	15.06.2025	0.1	Створено додаток Б та додано всі згадані графічні матеріали
+5	15.06.2025	0.1	Створено додаток В та додано частини програмного коду
+6	15.06.2025	0.1	Створено розділ «Висновки»
+7	16.06.2025	0.1	Додано посилання на відеозапис та хронологічний опис доповіді у додаток А
+
+2 ЗАВДАННЯ
+1.	Розробити клієнтську / front-end частину програмної системи.
+2.	Проаналізувати завдання.
+3.	Виконати контрольні завдання.
+4.	Відкрити створений на попередній лабораторній роботі репозиторій GitHub.
+5.	Створити у репозиторії директорію Task3 та текстовий файл з описом інженерних рішень у цій частині проєкту, як вказано у додатку.
+6.	Зафіксувати кожну внесену зміну командою git commit з відповідним коментарем та фіксувати цією командою усі наступні зміни у проєкті.
+7.	Створити у директорії Task3 піддиректорію для програмного коду.
+8.	Створити програмний код, завантажити його у створену піддиректорію, зафіксувати внесені у репозиторій зміни.
+9.	Виконати функціональне тестування створеного програмного коду та створити відеозапис цього тестування тривалістю 7-10 хвилин з усними поясненнями процесу тестування.
+10.	Завантажити створений відеозапис тестування YouTube канал для вашого облікового запису в домені @nure.ua.
+11.	Створити для завантаженого запису його хронологічний опис.
+12.	Оформити звіт у форматі pdf та завантажити його на навчальну платформу https://dl.nure.ua/.
+13.	У коментарях до завантаженого звіту вказпти посилання на відеозапис тестування у вашому каналі YouTube. 
+
+3 ОПИС ВИКОНАНОЇ РОБОТИ
+Веб-клієнта програмної системи було розроблено з використанням фреймворку React на мові програмування JavaScript.
+Веб-клієнт надає розширений функціонал для користувачів та адміністраторів через браузер. Його функціональність включає:
+-	Інтерактивне відображення стану контейнерів з позначенням рівня їхнього заповнення, температури та вологості.
+-	Можливість фільтрувати контейнери за типом відходів.
+-	Забезпечення пошуку контейнерів за адресою для швидкого доступу до необхідної інформації.
+-	Інструменти для адміністраторів, до яких входить: додавання, редагування чи видалення інформації про контейнери, сенсори, користувачів, перегляд сповіщень та даних з сенсорів, а також створення резервної копії бази даних та її відновлення.
+
+4 ВИСНОВКИ
+Під час виконання лабораторної роботи було розроблено клієнтську частину програмної системи. Було реалізовано інтерфейси для користувача, системного адміністратора, адміністратора бізнес-логіки та адміністратора бази даних.
+
+ДОДАТОК А
+Відеозапис та хронологічний опис
+
+Відеозапис доповіді на YouTube: 
+Хронологічний опис відеозапису:
+
+ДОДАТОК Б
+Графічні матеріали
+
+Рисунок Б.1 – ER-діаграма даних
+
+Рисунок Б.2 – Структура бази даних
+
+Рисунок Б.3 – UML-діаграма прецедентів
+
+Рисунок Б.4 – UML-діаграма компонент
+
+Рисунок Б.5 – UML-діаграма діяльності
+
+Рисунок Б.6 – UML-діаграма взаємодії
+
+ДОДАТОК В
+Програмний код
+
+В.1 Математична обробка прикладних даних
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab3/pzpi-22-6-afanasieva-oksana-lab3/ReactSortGarbage/src/components/ContainerCard.jsx
+1    const [sensorData, setSensorData] = useState(null);
+2    const [loading, setLoading] = useState(true);
+3  
+4    useEffect(() => {
+5      const fetchSensorData = async () => {
+6        try {
+7          const data = await getSensorDataForContainer(container.containerId);
+8          setSensorData(data[data.length - 1] || null);
+9        } catch (error) {
+10          console.error('Failed to fetch sensor data', error);
+11        } finally {
+12          setLoading(false);
+13        }
+14      };
+15  
+16      fetchSensorData();
+17    }, [container.containerId]);
+18  
+19    const getStatusColor = (value) => {
+20      if (!value) return 'gray';
+21      if (value > 80) return 'red';
+22      if (value > 50) return 'orange';
+23      return 'green';
+24    };
+25  
+26    const formatNumber = (num) => {
+27      return num ? num.toFixed(1) : '0.0';
+28    };
+29  
+30    return (
+31      <div className="container-card">
+32        <h3>{container.address}</h3>
+33        <div className="type-badge">{containerTypeMap[container.type]}</div>
+34        
+35        {loading ? (
+36          <div>Loading sensor data...</div>
+37        ) : sensorData ? (
+38          <div className="sensor-data">
+39            <div className="data-item">
+40              <span>Fill level: {formatNumber(sensorData.fullness) || 0}%</span>
+41              <div className="progress-bar">
+42                <div 
+43                  className={`progress-fill ${getStatusColor(sensorData.fullness)}`}
+44                  style={{ width: `${sensorData.fullness || 0}%` }}
+45                ></div>
+46              </div>
+47            </div>
+48            
+49            <div className="data-item">
+50              <span>Temperature:</span>
+51              <span className={sensorData.temperature > 30 ? 'warning' : ''}>
+52                {formatNumber(sensorData.temperature) || 0}°C
+53              </span>
+54            </div>
+55            
+56            <div className="data-item">
+57              <span>Humidity:</span>
+58              <span className={sensorData.wetness > 70 ? 'warning' : ''}>
+59                {formatNumber(sensorData.wetness) || 0}%
+60              </span>
+61            </div>
+62          </div>
+63        ) : (
+64          <div>No sensor data available</div>
+65        )}
+66      </div>
+67    );
+
+В.2 Адміністрування бізнес-логіки системи
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab3/pzpi-22-6-afanasieva-oksana-lab3/ReactSortGarbage/src/pages/ContainersAdminPage.jsx
+1    const [containers, setContainers] = useState([]);
+2    const [editingContainer, setEditingContainer] = useState(null);
+3  
+4    useEffect(() => {
+5      fetchContainers();
+6    }, []);
+7  
+8    const fetchContainers = async () => {
+9      try {
+10        const response = await api.get('/containers');
+11        setContainers(response.data);
+12      } catch (error) {
+13        console.error('Error fetching containers:', error);
+14      }
+15    };
+16  
+17    const handleDelete = async (id) => {
+18      try {
+19        await api.delete(`/containers/${id}`);
+20        fetchContainers();
+21      } catch (error) {
+22        console.error('Error deleting container:', error);
+23      }
+24    };
+25  
+26    const handleSubmit = async (containerData) => {
+27      try {
+28        if (editingContainer) {
+29          await api.put(`/containers/${editingContainer.containerId}`, containerData);
+30        } else {
+31          await api.post('/containers', containerData);
+32        }
+33        setEditingContainer(null);
+34        fetchContainers();
+35      } catch (error) {
+36        console.error('Error saving container:', error);
+37      }
+38    };
+
+В.3 Резервне копіювання користувацьких даних
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab3/pzpi-22-6-afanasieva-oksana-lab3/ReactSortGarbage/src/pages/DatabaseAdminPage.jsx
+1    const handleBackup = async () => {
+2      if (!backupPath) {
+3        setMessage('Please select backup folder first');
+4        return;
+5      }
+6  
+7      setIsLoading(true);
+8      setMessage('Creating backup...');
+9      
+10      try {
+11        const cleanedPath = cleanPath(backupPath);
+12        const response = await api.post('/database/backup', 
+13          `"${cleanedPath.replace(/\\/g, '\\\\')}"`,
+14          {
+15            headers: {
+16              'Content-Type': 'application/json'
+17            }
+18          }
+19        );
+20        setMessage(response.data.message || 'Backup completed successfully');
+21      } catch (error) {
+22        const serverError = error.response?.data;
+23        let errorMessage = 'Backup failed';
+24        
+25        if (serverError?.errors) {
+26          errorMessage += ': ' + Object.values(serverError.errors).flat().join(', ');
+27        } else if (serverError?.title) {
+28          errorMessage += ': ' + serverError.title;
+29        } else {
+30          errorMessage += ': ' + error.message;
+31        }
+32        
+33        setMessage(errorMessage);
+34        console.error('Backup error details:', serverError);
+35      } finally {
+36        setIsLoading(false);
+37      }
+38    };
+39  
+40    const handleRestore = async () => {
+41      if (!restorePath) {
+42        setMessage('Please select backup file first');
+43        return;
+44      }
+45  
+46      if (!confirm('WARNING: This will overwrite all current data. Continue?')) {
+47        return;
+48      }
+49  
+50      setIsLoading(true);
+51      setMessage('Restoring database...');
+52      
+53      try {
+54        const cleanedPath = cleanPath(restorePath);
+55        const response = await api.post('/database/restore', 
+56          `"${cleanedPath.replace(/\\/g, '\\\\')}"`,
+57          {
+58            headers: {
+59              'Content-Type': 'application/json'
+60            }
+61          }
+62        );
+63        setMessage(response.data.message || 'Restore completed successfully');
+64      } catch (error) {
+65        const serverError = error.response?.data;
+66        let errorMessage = 'Restore failed';
+67        
+68        if (serverError?.errors) {
+69          errorMessage += ': ' + Object.values(serverError.errors).flat().join(', ');
+70        } else if (serverError?.title) {
+71          errorMessage += ': ' + serverError.title;
+72        } else {
+73          errorMessage += ': ' + error.message;
+74        }
+75        
+76        setMessage(errorMessage);
+77        console.error('Restore error details:', serverError);
+78      } finally {
+79        setIsLoading(false);
+80      }
+81    };
