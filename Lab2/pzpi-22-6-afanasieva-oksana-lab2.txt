@@ -29,7 +29,7 @@
 4	20.05.2025	0.1	Створено додаток Б та додано всі згадані графічні матеріали
 5	23.05.2025	0.1	Створено додаток В та додано частини програмного коду
 6	23.05.2025	0.1	Створено розділ «Висновки»
-7	26.05.2025	0.1	Додано посилання на відеозапис та хронологічний опис доповіді у додаток А
+7	15.06.2025	0.1	Додано посилання на відеозапис та хронологічний опис доповіді у додаток А
 
 2 ЗАВДАННЯ
 1.	Розробити серверну / back-end частину програмної системи.
@@ -124,28 +124,37 @@ GET	/notifications/date/{date}	Отримати сповіщення за обр
 ДОДАТОК А
 Відеозапис та хронологічний опис
 
-Відеозапис доповіді на YouTube: 
+Відеозапис доповіді на YouTube: https://youtu.be/cqfaZHgcUac
 Хронологічний опис відеозапису:
-
+00:00 – Вступ
+00:31 – Тестування функцій авторизації
+01:14 – Тестування функцій адміністратора системи
+01:39 – Тестування бізнес-логіки обчислення відносної вологості
+02:05 – Тестування бізнес-логіки для відправки сповіщень про критичний стан контейнеру
+02:44 – Тестування функцій адміністратора бізнес логіки
+04:13 – Тестування функцій звичайного користувача
+05:09 – Тестування функцій адміністратора бази даних
+05:29 – Тестування створення резервної копії даних
+06:54 – Тестування відновлення бази даних
  
 ДОДАТОК Б
 Графічні матеріали
 
+Рисунок Б.1 – ER-діаграма даних
 
-Рисунок Б.1 – UML діаграма розгортання
- 
-Рисунок Б.2 – UML діаграма прецедентів
- 
-Рисунок Б.3 – ER діаграма даних
- 
+Рисунок Б.2 – Структура бази даних
+
+Рисунок Б.3 – UML-діаграма прецедентів
+
 Рисунок Б.4 – UML діаграма діяльності
 
+Рисунок Б.5 – UML діаграма розгортання
  
 ДОДАТОК В
 Програмний код
 
 В.1 Математична обробка прикладних даних
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Services/SensorDataService.cs
 1  private float calculateMaxAbsoluteHumidity(float temperature)
 2  {
 3      double exponent = (17.67 * temperature) / (temperature + 243.5);
@@ -155,7 +164,7 @@ GitHub репозиторій:
 7  }
 
 В.2 Адміністрування бізнес-логіки системи
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Controllers/UserController.cs
 1  using Microsoft.AspNetCore.Authorization;
 2  using Microsoft.AspNetCore.Mvc;
 3  using SortGarbageAPI.Models;
@@ -232,7 +241,7 @@ GitHub репозиторій:
 74  }
 
 В.3 Резервне копіювання користувацьких даних
-GitHub репозиторій: 
+GitHub репозиторій: https://github.com/NureAfanasievaOksana/apz-pzpi-22-6-afanasieva-oksana/blob/main/Lab2/pzpi-22-6-afanasieva-oksana-lab2/SortGarbageAPI/Services/DatabaseService.cs
 1  public async Task BackupDatabaseAsync(string backupFolderPath)
 2  {
 3      if (string.IsNullOrEmpty(backupFolderPath) || !Directory.Exists(backupFolderPath))
